@@ -2,7 +2,11 @@
 # -*- coding: utf-8 -*-
 # main.py
 from app import app
-import views
+
+
+@app.route('/')
+def index():
+    return 'СТАРТОВАЯ СТРАНИЦА'
 
 
 if __name__ == '__main__':
