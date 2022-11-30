@@ -36,11 +36,11 @@ class User(db.Model):
     surname = db.Column(db.String(255))
     favorite_genre_id = db.relationship("Genres", secondary=favorite_genres)
 
-    # __table_args__ = (
-    #     db.PrimaryKeyConstraint('pk', name='user_pk'),  # Основной ключ
-    #     db.UniqueConstraint('name'),  # Уникальный ключ
-    #     db.UniqueConstraint('email'),  # Уникальный ключ
-    # )
+    __table_args__ = (
+        db.PrimaryKeyConstraint('pk', name='user_pk'),  # Основной ключ
+        db.UniqueConstraint('name'),  # Уникальный ключ
+        db.UniqueConstraint('email'),  # Уникальный ключ
+    )
 
     def __repr__(self):
         return f"<User {self.name}, {self.favorite_genre_id}>"
