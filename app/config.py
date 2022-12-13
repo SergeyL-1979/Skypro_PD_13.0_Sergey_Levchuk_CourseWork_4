@@ -1,17 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os.path
-# from flask_sqlalchemy import SQLAlchemy
-#
-# db = SQLAlchemy()
+
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 
-class Configuration(object):
+class Config(object):
     DEBUG = True
     JSON_AS_ASCII = False
     # SECRET_HERE = '249y823r9v8238r9u'
-    # SQLALCHEMY_DATABASE_URI = 'sqlite:///data/my_movies.db'
-    # SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///./data/my_movies.db'
+    # SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    # SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
+    # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'order.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # =======================================================
     # # basedir = os.path.abspath(os.path.dirname(__file__))

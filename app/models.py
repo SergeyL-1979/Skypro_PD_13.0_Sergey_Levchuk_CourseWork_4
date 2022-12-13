@@ -1,15 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from marshmallow import Schema, fields
 
-# from app import db
-
-
-app = Flask(__name__)
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
-db = SQLAlchemy(app)
+from app.database import db
 
 favorite_genres = db.Table('favorite_genres',
                            db.Column('user_id', db.Integer, db.ForeignKey('user.pk')),
@@ -39,10 +32,10 @@ class User(db.Model):
     __tablename__ = "user"
 
     pk = db.Column(db.Integer, primary_key=True, autoincrement="auto")
-    email = db.Column(db.String(255), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)
     name = db.Column(db.String(255), unique=True, nullable=False)
-    surname = db.Column(db.String(255))
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(120), nullable=False)
+    surname = db.Column(db.String(120))
     favorite_genre_id = db.relationship("Genres", secondary=favorite_genres)
 
     __table_args__ = (
@@ -51,14 +44,27 @@ class User(db.Model):
         db.UniqueConstraint('email'),  # Уникальный ключ
     )
 
+    def __init__(self, name=None, email=None, password=None):
+        self.name = name
+        self.email = email
+        self.password = password
+
     def __repr__(self):
         return f"<User {self.name}, {self.favorite_genre_id}>"
 
 
+class UserSchema(Schema):
+    pk = fields.Int(dump_only=True)
+    email = fields.Str()
+    password = fields.Str()
+    name = fields.Str()
+    surname = fields.Str()
+
+
 class Movies(db.Model):
     """
-    - **id** - первичный ключ
-    - **title**- название
+    - ** id ** - первичный ключ
+    - ** title**- название
     - **description** - описание
     - **trailer** - ссылка на трейлер
     - **year** - год выпуска
@@ -74,11 +80,27 @@ class Movies(db.Model):
     trailer = db.Column(db.Text, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     rating = db.Column(db.Float, nullable=False)
+
     genre_id = db.relationship("Genres", secondary=movie_genre)
     director_id = db.relationship("Directors", secondary=movie_director)
 
+    # genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
+    # genre = db.relationship("Genre")
+    #
+    # director_id = db.Column(db.Integer, db.ForeignKey("director.id"))
+    # director = db.relationship("Director")
+
     def __repr__(self):
         return f"<Movies: {self.title}, Genre: {self.genre_id}, Director: {self.director_id}>"
+
+
+class MovieSchema(Schema):
+    pk = fields.Int(dump_only=True)
+    title = fields.Str()
+    description = fields.Str()
+    trailer = fields.Str()
+    year = fields.Int()
+    rating = fields.Float()
 
 
 class Directors(db.Model):
@@ -94,6 +116,11 @@ class Directors(db.Model):
         return f"<Directors: {self.name}>"
 
 
+class DirectorSchema(Schema):
+    pk = fields.Int(dump_only=True)
+    name = fields.Str()
+
+
 class Genres(db.Model):
     __tablename__ = "genre"
 
@@ -104,20 +131,6 @@ class Genres(db.Model):
         return f"<Genre: {self.name}>"
 
 
-# Здесь мы тестируем
-# genre_1 = Genres(name="genre=1", pk=1)
-# genre_2 = Genres(name="genre=2", pk=2)
-# genre_3 = Genres(name="genre=3", pk=3)
-# genre_4 = Genres(name="genre=4", pk=4)
-# director_1 = Directors(name='FooFI', pk=1)
-# director_2 = Directors(name='Dir_DO', pk=2)
-# user_1 = User(pk=1, name="User_1", email="foo_1@foo_1.com", password="123456", surname="Foo_User_1", favorite_genre_id=[genre_1, genre_3])
-# user_2 = User(pk=2, name="User_2", email="foo_2@foo_2.com", password="123456", surname="Foo_User_2", favorite_genre_id=[genre_3])
-#
-# movie_1 = Movies(pk=1, title='M_1', description='M-1__11', trailer='URL', year=2021, rating=4.5, genre_id=[genre_4, genre_1], director_id=[director_1, director_2])
-#
-#
-# print(user_1, genre_1, genre_3)
-# print(user_2, genre_3)
-#
-# print(movie_1, director_1, director_2)
+class GenreSchema(Schema):
+    pk = fields.Int(dump_only=True)
+    name = fields.Str()
