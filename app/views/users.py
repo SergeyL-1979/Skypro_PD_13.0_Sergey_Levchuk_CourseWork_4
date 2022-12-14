@@ -52,3 +52,27 @@ class UserView(Resource):
 #         return render_template('user.html',
 #                                user_profile=user_profile,
 #                                posts=posts)
+
+# @mod.route('/register/', methods=['GET', 'POST'])
+# class UserView(Resource):
+#     def register(self):
+#       """
+#       Registration Form
+#       """
+#       # form = RegisterForm(request.form)
+#       if form.validate_on_submit():
+#         # create an user instance not yet stored in the database
+#         user = User(name=form.name.data, email=form.email.data, \
+#           password=generate_password_hash(form.password.data))
+#         # Insert the record in our database and commit it
+#         db.session.add(user)
+#         db.session.commit()
+#
+#         # Log the user in, as he now has an id
+#         session['user_id'] = user.id
+#
+#         # flash will display a message to the user
+#         flash('Thanks for registering')
+#         # redirect user to the 'home' method of the user module.
+#         return redirect(url_for('users.home'))
+#       return render_template("users/register.html", form=form)
