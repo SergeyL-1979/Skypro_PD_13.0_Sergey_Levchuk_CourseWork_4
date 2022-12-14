@@ -9,7 +9,8 @@ class Config(object):
     DEBUG = True
     JSON_AS_ASCII = False
     # SECRET_HERE = '249y823r9v8238r9u'
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///./data/my_movies.db'
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///./data/movies.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///./data/test.db'
     # SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     # SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'order.db')
