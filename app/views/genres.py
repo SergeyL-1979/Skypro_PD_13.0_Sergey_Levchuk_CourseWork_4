@@ -4,7 +4,7 @@ from flask import request
 from flask_restx import Resource, Namespace
 
 from app.database import db
-from app.models import GenreSchema, Genres
+from app.models import GenreSchema, Genre
 
 genre_ns = Namespace('genres')
 
@@ -24,7 +24,7 @@ class GenreView(Resource):
     :parameter- `DELETE /genres/<id>` —  удаляет жанр.
     """
     def get(self):
-        all_genres = db.session.query(Genres).all()
+        all_genres = db.session.query(Genre).all()
         return genres_schema.dump(all_genres), 200
 
     def post(self):
@@ -48,13 +48,13 @@ class GenreView(Resource):
     """
     def get(self, gid: int):
         try:
-            genre = db.session.query(Genres).filter(Genres.id == gid).one()
+            genre = db.session.query(Genre).filter(Genre.id == gid).one()
             return genre_schema.dump(genre), 200
         except Exception as e:
             return str(e), 404
 
     def put(self, gid):
-        genre = db.session.query(Genres).get(gid)
+        genre = db.session.query(Genre).get(gid)
         req_json = request.json
 
         genre.name = req_json.get("name")
@@ -65,7 +65,7 @@ class GenreView(Resource):
         return "", 204
 
     def patch(self, gid):
-        genre = db.session.query(Genres).get(gid)
+        genre = db.session.query(Genre).get(gid)
         req_json = request.json
 
         if "name" in req_json:
@@ -77,7 +77,7 @@ class GenreView(Resource):
         return "", 204
 
     def delete(self, gid):
-        genre = db.session.query(Genres).get(gid)
+        genre = db.session.query(Genre).get(gid)
 
         db.session.delete(genre)
         db.session.commit()

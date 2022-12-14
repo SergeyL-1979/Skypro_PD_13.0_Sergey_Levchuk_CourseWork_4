@@ -4,7 +4,7 @@ from flask import request
 from flask_restx import Resource, Namespace
 
 from app.database import db
-from app.models import DirectorSchema, Directors
+from app.models import DirectorSchema, Director
 
 director_ns = Namespace('directors')
 
@@ -23,12 +23,12 @@ class DirectorView(Resource):
     :parameter- `DELETE /directors/<id>` —  удаляет режиссера.
     """
     def get(self):
-        all_directors = db.session.query(Directors).all()
+        all_directors = db.session.query(Director).all()
         return directors_schema.dump(all_directors), 200
 
     def post(self):
         req_json = request.json
-        new_director = Directors(**req_json)
+        new_director = Director(**req_json)
 
         with db.session.begin():
             db.session.add(new_director)
@@ -47,13 +47,13 @@ class DirectorView(Resource):
     """
     def get(self, did: int):
         try:
-            director = db.session.query(Directors).filter(Directors.id == did).one()
+            director = db.session.query(Director).filter(Director.id == did).one()
             return director_schema.dump(director), 200
         except Exception as e:
             return str(e), 404
 
     def put(self, did):
-        director = db.session.query(Directors).get(did)
+        director = db.session.query(Director).get(did)
         req_json = request.json
 
         director.name = req_json.get("name")
@@ -64,7 +64,7 @@ class DirectorView(Resource):
         return "", 204
 
     def patch(self, did):
-        director = db.session.query(Directors).get(did)
+        director = db.session.query(Director).get(did)
         req_json = request.json
 
         if "name" in req_json:
@@ -76,7 +76,7 @@ class DirectorView(Resource):
         return "", 204
 
     def delete(self, did):
-        director = db.session.query(Directors).get(did)
+        director = db.session.query(Director).get(did)
 
         db.session.delete(director)
         db.session.commit()

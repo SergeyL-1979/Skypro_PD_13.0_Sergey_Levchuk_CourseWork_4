@@ -4,7 +4,7 @@ from flask import request
 from flask_restx import Resource, Namespace
 
 from app.database import db
-from app.models import MovieSchema, Movies
+from app.models import MovieSchema, Movie
 
 movie_ns = Namespace('movies')
 
@@ -32,22 +32,22 @@ class MoviesView(Resource):
         genre = request.args.get("genre_id")
 
         if director and genre is not None:
-            all_movies = Movies.query.filter(Movies.director_id == director).filter(Movies.genre_id == genre)
+            all_movies = Movie.query.filter(Movie.director_id == director).filter(Movie.genre_id == genre)
             return movies_schema.dump(all_movies), 200
 
         if genre is not None:
-            all_movies = Movies.query.filter(Movies.genre_id == genre)
+            all_movies = Movie.query.filter(Movie.genre_id == genre)
             return movies_schema.dump(all_movies), 200
 
         if director is None:
-            all_movies = db.session.query(Movies).all()
+            all_movies = db.session.query(Movie).all()
         else:
-            all_movies = Movies.query.filter(Movies.director_id == director)
+            all_movies = Movie.query.filter(Movie.director_id == director)
         return movies_schema.dump(all_movies), 200
 
     def post(self):
         req_json = request.json
-        new_movie = Movies(**req_json)
+        new_movie = Movie(**req_json)
 
         with db.session.begin():
             db.session.add(new_movie)
@@ -67,13 +67,13 @@ class MoviesView(Resource):
     """
     def get(self, mid: int):
         try:
-            movie = db.session.query(Movies).filter(Movies.id == mid).one()
+            movie = db.session.query(Movie).filter(Movie.id == mid).one()
             return movie_schema.dump(movie), 200
         except Exception as e:
             return str(e), 404
 
     def put(self, mid):
-        movie = db.session.query(Movies).get(mid)
+        movie = db.session.query(Movie).get(mid)
         req_json = request.json
 
         movie.title = req_json.get("title")
@@ -90,7 +90,7 @@ class MoviesView(Resource):
         return "", 204
 
     def patch(self, mid):
-        movie = db.session.query(Movies).get(mid)
+        movie = db.session.query(Movie).get(mid)
         req_json = request.json
 
         if "title" in req_json:
@@ -114,7 +114,7 @@ class MoviesView(Resource):
         return "", 204
 
     def delete(self, mid):
-        movie = db.session.query(Movies).get(mid)
+        movie = db.session.query(Movie).get(mid)
 
         db.session.delete(movie)
         db.session.commit()
