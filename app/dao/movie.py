@@ -15,6 +15,11 @@ class MovieDAO:
     def get_all(self):
         director = request.args.get("director_id")
         genre = request.args.get("genre_id")
+        year = request.args.get("year")
+
+        if year is not None:
+            movies = Movie.query.filter(Movie.year == year)
+            return movies
 
         if director and genre is not None:
             movies = Movie.query.filter(Movie.director_id == director).filter(Movie.genre_id == genre)
