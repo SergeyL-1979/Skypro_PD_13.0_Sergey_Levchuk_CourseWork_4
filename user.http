@@ -1,0 +1,17 @@
+POST http://localhost:5001/users/
+Content-Type: application/json
+
+{
+    "name": "usersd_name-2",
+    "email": "email@example.com",
+    "password": "141526",
+    "surname": "user_last++",
+    "favorite_genre_id": 5
+}
+
+###
+
+GET http://localhost:5001/users/
+Accept:application/json
+
+###

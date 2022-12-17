@@ -25,16 +25,18 @@ class User(db.Model):
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
 
-    # __table_args__ = (
-    #     db.PrimaryKeyConstraint('id', name='user_id'),  # Основной ключ
-    #     db.UniqueConstraint('name'),  # Уникальный ключ
-    #     db.UniqueConstraint('email'),  # Уникальный ключ
-    # )
+    __table_args__ = (
+        db.PrimaryKeyConstraint('id', name='user_id'),  # Основной ключ
+        db.UniqueConstraint('name'),  # Уникальный ключ
+        db.UniqueConstraint('email'),  # Уникальный ключ
+    )
 
-    def __init__(self, name=None, email=None, password=None):
-        self.name = name
-        self.email = email
-        self.password = password
+    # === НУЖНО ДЛЯ ИНИЦИЛИЗАЦИИ ==========
+    # def __init__(self, name=None, email=None, password=None, surname=None):
+    #     self.name = name
+    #     self.email = email
+    #     self.password = password
+    #     self.surname = surname
 
     def __repr__(self):
         return f"<User {self.name}, {self.favorite_genre_id}>"
@@ -42,7 +44,8 @@ class User(db.Model):
 
 class UserSchema(Schema):
     id = fields.Int(dump_only=True)
+    name = fields.Str()
     email = fields.Str()
     password = fields.Str()
-    name = fields.Str()
     surname = fields.Str()
+    favorite_genre_id = fields.Int()
