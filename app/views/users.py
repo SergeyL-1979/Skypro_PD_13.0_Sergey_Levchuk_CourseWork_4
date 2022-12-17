@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import request, flash, redirect, url_for, render_template
+from flask import request
 from flask_restx import Resource, Namespace
 
-from app.database import db
-from app.models import UserSchema, User
+from app.container import user_service
+from app.dao.model.user import UserSchema
 
 user_ns = Namespace('users')
 
@@ -22,18 +22,48 @@ class UserView(Resource):
     :parameter- `PUT /users/<id>` —  обновляет user,
     :parameter- `DELETE /users/<id>` —  удаляет user.
     """
-
     def get(self):
-        all_users = db.session.query(User).all()
+        all_users = user_service.get_all()
         return users_schema.dump(all_users), 200
 
     def post(self):
         req_json = request.json
-        new_user = User(**req_json)
-
-        with db.session.begin():
-            db.session.add(new_user)
+        user_service.create(req_json)
         return "", 201
+
+
+@user_ns.route('/<int:uid>')
+class UserView(Resource):
+    """
+    :parameter- `/users/` —  возвращает все user,
+    :parameter- `/users/<id>` — возвращает информацию о жанре с перечислением списка фильмов по user,
+
+    :parameter- `POST /users/` —  добавляет user,
+    :parameter- `PUT /users/<id>` —  обновляет user,
+    :parameter- `DELETE /users/<id>` —  удаляет user.
+    """
+    def get(self, uid: int):
+        try:
+            user = user_service.get_one(uid)
+            return user_schema.dump(user), 200
+        except Exception as e:
+            return str(e), 404
+
+    def put(self, uid):
+        req_json = request.json
+        req_json["id"] = uid
+        user_service.update(req_json)
+        return "", 204
+
+    def patch(self, uid):
+        req_json = request.json
+        req_json["id"] = uid
+        user_service.update_partial(req_json)
+        return "", 204
+
+    def delete(self, uid):
+        user_service.delete(uid)
+        return "", 204
 
 
 # ======= НАДО ПРОРАБОТАТЬ НАД ПРОФИЛЕМ =======================

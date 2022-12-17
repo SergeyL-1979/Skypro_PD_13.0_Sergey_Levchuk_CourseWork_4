@@ -3,8 +3,8 @@
 from flask import request
 from flask_restx import Resource, Namespace
 
-from app.database import db
-from app.models import DirectorSchema, Director
+from app.container import director_service
+from app.dao.model.director import DirectorSchema
 
 director_ns = Namespace('directors')
 
@@ -23,15 +23,12 @@ class DirectorView(Resource):
     :parameter- `DELETE /directors/<id>` —  удаляет режиссера.
     """
     def get(self):
-        all_directors = db.session.query(Director).all()
+        all_directors = director_service.get_all()
         return directors_schema.dump(all_directors), 200
 
     def post(self):
         req_json = request.json
-        new_director = Director(**req_json)
-
-        with db.session.begin():
-            db.session.add(new_director)
+        director_service.create(req_json)
         return "", 201
 
 
@@ -47,40 +44,24 @@ class DirectorView(Resource):
     """
     def get(self, did: int):
         try:
-            director = db.session.query(Director).filter(Director.id == did).one()
+            director = director_service.get_one(did)
             return director_schema.dump(director), 200
         except Exception as e:
             return str(e), 404
 
     def put(self, did):
-        director = db.session.query(Director).get(did)
         req_json = request.json
-
-        director.name = req_json.get("name")
-
-        db.session.add(director)
-        db.session.commit()
-
+        req_json["id"] = did
+        director_service.update(req_json)
         return "", 204
 
     def patch(self, did):
-        director = db.session.query(Director).get(did)
         req_json = request.json
-
-        if "name" in req_json:
-            director.name = req_json.get("name")
-
-        db.session.add(director)
-        db.session.commit()
-
+        req_json["id"] = did
+        director_service.update(req_json)
         return "", 204
 
     def delete(self, did):
-        director = db.session.query(Director).get(did)
-
-        db.session.delete(director)
-        db.session.commit()
-
+        director_service.delete(did)
         return "", 204
-
 

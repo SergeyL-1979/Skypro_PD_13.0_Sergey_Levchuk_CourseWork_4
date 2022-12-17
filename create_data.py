@@ -8,13 +8,15 @@ from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./data/test.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./data/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./data/movies.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
 class User(db.Model):
     __tablename__ = "user"
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -22,8 +24,6 @@ class User(db.Model):
     surname = db.Column(db.String(120))
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
-
-    # favorite_genre_id = db.relationship("Genre", secondary=favorite_genres)
 
 
 class Movie(db.Model):
@@ -33,7 +33,7 @@ class Movie(db.Model):
     description = db.Column(db.String(255))
     trailer = db.Column(db.String(255))
     year = db.Column(db.Integer)
-    rating = db.Column(db.Integer)
+    rating = db.Column(db.Float)
     genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
     director_id = db.Column(db.Integer, db.ForeignKey("director.id"))

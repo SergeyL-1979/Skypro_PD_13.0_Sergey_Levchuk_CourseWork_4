@@ -25,11 +25,11 @@ class User(db.Model):
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
 
-    __table_args__ = (
-        db.PrimaryKeyConstraint('id', name='user_id'),  # Основной ключ
-        db.UniqueConstraint('name'),  # Уникальный ключ
-        db.UniqueConstraint('email'),  # Уникальный ключ
-    )
+    # __table_args__ = (
+    #     db.PrimaryKeyConstraint('id', name='user_id'),  # Основной ключ
+    #     db.UniqueConstraint('name'),  # Уникальный ключ
+    #     db.UniqueConstraint('email'),  # Уникальный ключ
+    # )
 
     def __init__(self, name=None, email=None, password=None):
         self.name = name

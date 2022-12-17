@@ -8,10 +8,10 @@ class UserDAO:
     def __init__(self, session):
         self.session = session
 
-    def get_by_one(self, uid):
+    def get_one(self, uid):
         return self.session.query(User).get(uid)
 
-    def get_by_all(self):
+    def get_all(self):
         return self.session.query(User).all()
 
     def create(self, data):
@@ -32,7 +32,7 @@ class UserDAO:
     #     return {}
 
     def delete(self, uid):
-        user = self.get_by_one(uid)
+        user = self.get_one(uid)
         self.session.delete(user)
         self.session.commit()
         return user
