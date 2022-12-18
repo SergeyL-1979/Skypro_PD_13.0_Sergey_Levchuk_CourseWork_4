@@ -1,7 +1,7 @@
 # create_data.py
 
 # чтобы создать БД с данными 
-
+from datetime import datetime
 from flask import Flask, request
 from flask_restx import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
@@ -19,9 +19,13 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True, nullable=False)
+    surname = db.Column(db.String(120))
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
-    surname = db.Column(db.String(120))
+
+    created_on = db.Column(db.DateTime(), default=datetime.utcnow)
+    updated_on = db.Column(db.DateTime(), default=datetime.utcnow, onupdate=datetime.utcnow)
+
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
 
