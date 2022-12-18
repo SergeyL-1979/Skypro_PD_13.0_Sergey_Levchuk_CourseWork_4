@@ -2,16 +2,13 @@
 # -*- coding: utf-8 -*-
 import os.path
 
-# == СОЗДАНИЕ СЕКРЕТНОГО КЛЮЧА СЕССИИ ==
-secret_key = os.urandom(20).hex()
-
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config(object):
     DEBUG = True
     JSON_AS_ASCII = False
-    SECRET_KEY = secret_key
+    SECRET_KEY = os.getenv('SECRET_KEY')
     SQLALCHEMY_DATABASE_URI = 'sqlite:///./data/movies.db'
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'order.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
