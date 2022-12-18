@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os.path
-
-# === ИМПОРТИРУЕМ load_dotenv ===
+import os
+# ==== ИМПОРТИРУЕМ load_dotenv ====
 from dotenv import load_dotenv
-load_dotenv(override=True)
 
+# ==== НАСТРОЙКА ПУТИ К basedir ====
 basedir = os.path.abspath(os.path.dirname(__file__))
+
+# ==== АКТИВАЦИЯ БИБЛИОТЕКИ python-dontenv ====
+load_dotenv(override=True)
+# load_dotenv(os.path.join(basedir, ".flaskenv"))
 
 
 class Config(object):
@@ -16,15 +19,26 @@ class Config(object):
     # SECRET_KEY = os.getenv('SECRET_KEY')
     # === ИЛИ ВОТ ТАКОЙ ВАРИАНТ =============
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///./data/movies.db'
-    # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'order.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///./data/movies.db'
+    POSTS_PER_PAGE = 12  # пагинация, вывод данных на страницу
 
-    # =============== ПАМЯТКА КОМАНД ========================================
+    # ==== ПАРАМЕТРЫ НАСТРОЙКИ ПОЧТЫ ========
+    # MAIL_SERVER = "smtp.gmail.com"
+    # MAIL_PORT = 587
+    # MAIL_USE_TLS = True
+    # SENDER_EMAIL = os.environ.get("SENDER_EMAIL")
+    # MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+    # MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+
+    # =============== ПАМЯТКА КОМАНД ===========================
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///./data/movies.db'
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///./data/test.db'
     # SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     # SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
+    # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'order.db')
+    # SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "app.db")
+
     # # basedir = os.path.abspath(os.path.dirname(__file__))
     # BASE_DIR = os.path.abspath(path="data")
     # POST_PATH = os.path.join(BASE_DIR, "posts.json")
