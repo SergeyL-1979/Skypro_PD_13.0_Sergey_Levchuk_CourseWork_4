@@ -2,13 +2,20 @@
 # -*- coding: utf-8 -*-
 import os.path
 
+# === ИМПОРТИРУЕМ load_dotenv ===
+from dotenv import load_dotenv
+load_dotenv(override=True)
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config(object):
     DEBUG = True
     JSON_AS_ASCII = False
-    SECRET_KEY = os.getenv('SECRET_KEY')
+    # === МОЖНО ИСПОЛЬЗОВАТЬ ВАРИАНТА =======
+    # SECRET_KEY = os.getenv('SECRET_KEY')
+    # === ИЛИ ВОТ ТАКОЙ ВАРИАНТ =============
+    SECRET_KEY = os.environ.get('SECRET_KEY')
     SQLALCHEMY_DATABASE_URI = 'sqlite:///./data/movies.db'
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'order.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
