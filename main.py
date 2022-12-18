@@ -33,4 +33,4 @@ if __name__ == '__main__':
     app_config = Config()
     app = create_app(app_config)
     configure_app(app)
-    app.run(port=5001)
+    app.run(port=10001)
