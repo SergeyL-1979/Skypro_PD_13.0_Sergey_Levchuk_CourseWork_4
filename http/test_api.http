@@ -74,7 +74,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://127.0.0.1:10101/movies/3
+PATCH http://127.0.0.1:10101/movies/21
 Accept: application/json
 Content-Type: application/json
 
@@ -85,7 +85,7 @@ Content-Type: application/json
   "year": 0,
   "rating": 0,
   "description": "0 из 10!",
-  "genre_id": 1,
+  "genre_id": 5,
   "director_id": 1
 }
 
