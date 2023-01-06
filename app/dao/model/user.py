@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from flask_login import UserMixin
 from marshmallow import Schema, fields
 
 from app.database import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     """
     Модель пользователя имеет следующие поля:
     - ** id ** - первичный ключ
@@ -44,6 +46,12 @@ class User(db.Model):
     def __repr__(self):
         return "<{}:{}>".format(self.id, self.name)
         # return f"<User {self.name}, {self.favorite_genre_id}>"
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 
 class UserSchema(Schema):

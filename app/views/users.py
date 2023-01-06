@@ -66,6 +66,15 @@ class UserView(Resource):
         return "", 204
 
 
+@user_ns.route('/<name>')
+class UserView(Resource):
+    def get(self, name):
+        try:
+            user_name = user_service.get_username(name)
+            return user_schema.dump(user_name), 200
+        except Exception as e:
+            return str(e), 404
+
 # ======= НАДО ПРОРАБОТАТЬ НАД ПРОФИЛЕМ =======================
 # @user_ns.route('/<nickname>')
 # # @login_required

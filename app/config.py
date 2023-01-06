@@ -15,10 +15,12 @@ load_dotenv(override=True)
 class Config(object):
     DEBUG = True
     JSON_AS_ASCII = False
+    SERVER_NAME = '127.0.0.1:10101'
     # === МОЖНО ИСПОЛЬЗОВАТЬ ВАРИАНТА =======
     # SECRET_KEY = os.getenv('SECRET_KEY')
     # === ИЛИ ВОТ ТАКОЙ ВАРИАНТ =============
-    SECRET_KEY = os.environ.get('SECRET_KEY')
+    # SECRET_KEY = os.environ.get('SECRET_KEY')
+    SECRET_KEY = '249y823r9v8238r9u'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///./data/movies.db'
     POSTS_PER_PAGE = 12  # пагинация, вывод данных на страницу
