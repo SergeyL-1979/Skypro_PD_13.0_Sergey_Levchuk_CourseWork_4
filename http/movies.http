@@ -1,4 +1,4 @@
-POST http://localhost:5001/movies/
+POST http://localhost:10101/movies/
 Content-Type: application/json
 
 {
@@ -13,27 +13,27 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:5001/movies/
+GET http://localhost:10101/movies/
 Accept: application/json
 
 ###
 
-GET http://localhost:5001/movies/?director_id=2
+GET http://localhost:10101/movies/?director_id=2
 Accept: application/json
 
 ###
 
-GET http://localhost:5001/movies/?director_id=2&genre_id=4
+GET http://localhost:10101/movies/?director_id=2&genre_id=4
 Accept: application/json
 
 ###
 
-GET http://localhost:5001/movies/1
+GET http://localhost:10101/movies/1
 Accept: application/json
 
 ###
 
-PUT http://localhost:5001/movies/1
+PUT http://localhost:10101/movies/1
 Accept: application/json
 Content-Type: application/json
 
@@ -48,12 +48,12 @@ Content-Type: application/json
 }
 ###
 
-DELETE http://localhost:5001/movies/22
+DELETE http://localhost:10101/movies/22
 Accept: application/json
 
 ###
 
-PATCH http://localhost:5001/movies/1
+PATCH http://localhost:10101/movies/1
 Accept: application/json
 Content-Type: application/json
 
