@@ -4,7 +4,7 @@ from app.dao.user import UserDAO
 from app.dao.movie import MovieDAO
 from app.dao.director import DirectorDAO
 from app.dao.genre import GenreDAO
-from app.database import db
+from app.setup_db import db
 from app.services.user import UserService
 from app.services.movie import MovieService
 from app.services.director import DirectorService

@@ -3,7 +3,7 @@
 from flask import request
 from flask_restx import Resource, Namespace
 
-from app.container import user_service
+from app.implemented import user_service
 from app.dao.model.user import UserSchema
 
 user_ns = Namespace('users')

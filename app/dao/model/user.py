@@ -4,7 +4,7 @@ from datetime import datetime
 from flask_login import UserMixin
 from marshmallow import Schema, fields
 
-from app.database import db
+from app.setup_db import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 

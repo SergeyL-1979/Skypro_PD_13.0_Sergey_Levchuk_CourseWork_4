@@ -8,7 +8,7 @@ from app.views.movies import movie_ns
 from app.views.directors import director_ns
 from app.views.genres import genre_ns
 from app.config import Config
-from app.database import db
+from app.setup_db import db
 
 
 def create_app(config: Config) -> Flask:
@@ -21,7 +21,7 @@ def create_app(config: Config) -> Flask:
 
 def configure_app(application: Flask):
     db.init_app(application)
-    api = Api(app=app, title="SkyPro: Sergei_Levchuk_coursework_4", )
+    api = Api(app=app, title="SkyPro: Sergei_Levchuk_CourseWork_4", )
 
     api.add_namespace(user_ns)
     api.add_namespace(movie_ns)

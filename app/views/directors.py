@@ -3,7 +3,7 @@
 from flask import request
 from flask_restx import Resource, Namespace
 
-from app.container import director_service
+from app.implemented import director_service
 from app.dao.model.director import DirectorSchema
 
 director_ns = Namespace('directors')

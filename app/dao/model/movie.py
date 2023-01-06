@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from marshmallow import Schema, fields
 
-from app.database import db
+from app.setup_db import db
 
 
 class Movie(db.Model):

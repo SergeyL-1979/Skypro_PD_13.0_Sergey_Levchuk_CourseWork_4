@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from app.dao.model.movie import Movie
 from flask import request
+
+from app.dao.model.movie import Movie
 
 
 class MovieDAO:
