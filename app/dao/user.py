@@ -6,7 +6,7 @@ import hashlib
 import base64
 import hmac
 
-from ..constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS
+from app.constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS
 
 from app.dao.model.user import User
 
@@ -46,6 +46,7 @@ class UserDAO:
         self.session.delete(user)
         self.session.commit()
         return user
+
     def compare_passwords(self, password_hash, other_password) -> bool:
         return hmac.compare_digest(
             base64.b64decode(password_hash),

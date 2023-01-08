@@ -6,7 +6,7 @@ import hashlib
 import base64
 import hmac
 
-from ..constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS
+from app.constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS
 
 from app.dao.user import UserDAO
 

@@ -15,7 +15,7 @@ load_dotenv(override=True)
 class Config(object):
     DEBUG = True
     JSON_AS_ASCII = False
-    SERVER_NAME = '127.0.0.1:10101'
+    SERVER_NAME = '127.0.0.1:15000'
     SECRET_KEY = '249y823r9v8238r9u'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///./data/movies.db'

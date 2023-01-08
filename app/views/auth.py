@@ -6,9 +6,9 @@ from flask_restx.inputs import email
 
 # ===== НЕ МОГУ ПОНЯТЬ КАК ЭТИ ИМПОРТЫ ТО РАБОТАЮТ С ТОЧКАМИ ============
 # ==================== ТО РАБОТАЮТ БЕЗ НИХ =======================
-from ..decorators import auth_required, admin_required
+from app.decorators import auth_required, admin_required
 
-from ..implemented import auth_service, user_service
+from app.implemented import auth_service, user_service
 # ============ ИЛИ ============
 # from container import auth_service
 
@@ -61,7 +61,7 @@ class AuthView(Resource):
 
 @auth_ns.route('/register')
 class AuthView(Resource):
-    @api.doc(parser=auth_reqparser)
+    # @api.doc(parser=auth_reqparser)
     def post(self):
         # req_json = request.json
         req_json = auth_reqparser.parse_args()

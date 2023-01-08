@@ -4,7 +4,8 @@ import jwt
 # from functools import wraps
 from flask import request, abort
 
-from .constants import JWT_SECRET, JWT_ALGORITHM
+from app.constants import JWT_SECRET, JWT_ALGORITHM
+from app.implemented import user_service
 
 
 def auth_required(func):
@@ -17,9 +18,15 @@ def auth_required(func):
 
         try:
             jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            # current_user = user_service.get_email(user["email"])
         except Exception as e:
-            print("JWT Decode Exception", e)
-            abort(401)
+            # print("JWT Decode Exception", e)
+            # abort(401)
+            return {
+                "message": "Something went wrong",
+                "data": None,
+                "error": str(e)
+            }, 500
 
         return func(*args, **kwargs)
     return wrapper
