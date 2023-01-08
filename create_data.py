@@ -29,6 +29,8 @@ class User(db.Model):
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
 
+    role = db.Column(db.String(25), nullable=False)
+
 
 class Movie(db.Model):
     __tablename__ = 'movie'

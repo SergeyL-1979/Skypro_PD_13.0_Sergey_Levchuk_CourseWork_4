@@ -4,7 +4,7 @@ import jwt
 # from functools import wraps
 from flask import request, abort
 
-from constants import JWT_SECRET, JWT_ALGORITHM
+from .constants import JWT_SECRET, JWT_ALGORITHM
 
 
 def auth_required(func):
@@ -44,6 +44,7 @@ def admin_required(func):
 
     return wrapper
 
+# ================ ОБРАЗЕЦ JWT ============
 # decorator for verifying the JWT
 # def token_required(f):
 #     @wraps(f)
@@ -59,9 +60,7 @@ def admin_required(func):
 #         try:
 #             # decoding the payload to fetch the stored details
 #             data = jwt.decode(token, app.config['SECRET_KEY'])
-#             current_user = User.query \
-#                 .filter_by(public_id=data['public_id']) \
-#                 .first()
+#             current_user = User.query.filter_by(public_id=data['public_id']).first()
 #         except:
 #             return jsonify({
 #                 'message': 'Token is invalid !!'

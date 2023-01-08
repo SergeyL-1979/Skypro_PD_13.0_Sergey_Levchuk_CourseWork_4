@@ -5,7 +5,6 @@ from flask_login import UserMixin
 from marshmallow import Schema, fields
 
 from app.setup_db import db
-from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(db.Model, UserMixin):
@@ -30,28 +29,11 @@ class User(db.Model, UserMixin):
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
 
-    # __table_args__ = (
-    #     db.PrimaryKeyConstraint('id', name='user_id'),  # Основной ключ
-    #     db.UniqueConstraint('name'),  # Уникальный ключ
-    #     db.UniqueConstraint('email'),  # Уникальный ключ
-    # )
-
-    # === НУЖНО ДЛЯ ИНИЦИЛИЗАЦИИ ==========
-    # def __init__(self, name=None, email=None, password=None, surname=None):
-    #     self.name = name
-    #     self.email = email
-    #     self.password = password
-    #     self.surname = surname
+    role = db.Column(db.String(25), nullable=False)
 
     def __repr__(self):
         return "<{}:{}>".format(self.id, self.name)
         # return f"<User {self.name}, {self.favorite_genre_id}>"
-
-    def set_password(self, password):
-        self.password = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
 
 
 class UserSchema(Schema):
@@ -62,4 +44,4 @@ class UserSchema(Schema):
     surname = fields.Str()
     created_on = fields.DateTime("%d-%m-%Y %H:%M")
     updated_on = fields.DateTime("%d-%m-%Y %H:%M")
-    favorite_genre_id = fields.Int()
+    role = fields.Str()

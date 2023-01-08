@@ -6,7 +6,7 @@
 # CONSTANT_NAME = "value"
 # LOG_DIR = "logs"
 # Добавляем константы в файл constants.py
-from config import Config
+from .config import Config
 
 JWT_SECRET = Config.SECRET_KEY
 JWT_ALGORITHM = "HS256"

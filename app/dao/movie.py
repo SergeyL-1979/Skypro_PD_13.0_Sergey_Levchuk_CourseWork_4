@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from flask import request
 
-from app.dao.model.movie import Movie
+from ..dao.model.movie import Movie
 
 
 class MovieDAO:
@@ -18,6 +18,10 @@ class MovieDAO:
         genre = request.args.get("genre_id")
         year = request.args.get("year")
 
+        # ==== РЕАЛИЗУЕМ ПАГИНАЦИЮ (вывод на страницу) ====
+        page = request.args.get('page', 1, type=int)
+        movies = Movie.query.paginate(page=page, per_page=12)
+
         if year is not None:
             movies = Movie.query.filter(Movie.year == year)
             return movies
@@ -31,7 +35,9 @@ class MovieDAO:
             return movies
 
         if director is None:
-            movies = self.session.query(Movie).all()
+            # ТАК КАК ПАГИНАЦИЯ НЕ ИТЕРИРУЕТСЯ ТО ВЫВОД БУДЕТ ПО items
+            movies = movies.items
+            # movies = self.session.query(Movie).all()
         else:
             movies = Movie.query.filter(Movie.director_id == director)
         return movies
