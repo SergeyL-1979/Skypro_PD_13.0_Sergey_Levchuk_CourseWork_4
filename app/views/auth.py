@@ -23,8 +23,10 @@ parser.add_argument(name='password', type=str, help='Password')
 
 auth_reqparser = reqparse.RequestParser(bundle_errors=True)
 auth_reqparser.add_argument(name="name", type=str, required=True, nullable=False)
+auth_reqparser.add_argument(name="surname", type=str, required=True, nullable=False)
 auth_reqparser.add_argument(name="email", type=email(), required=True, nullable=False)
 auth_reqparser.add_argument(name="password", type=str, required=True, nullable=False)
+auth_reqparser.add_argument(name="favorite_genre_id", type=str, required=True, nullable=False)
 auth_reqparser.add_argument(name="role", type=str, required=True, nullable=False)
 
 
@@ -61,7 +63,7 @@ class AuthView(Resource):
 
 @auth_ns.route('/register')
 class AuthView(Resource):
-    # @api.doc(parser=auth_reqparser)
+    @api.doc(parser=auth_reqparser)
     def post(self):
         # req_json = request.json
         req_json = auth_reqparser.parse_args()

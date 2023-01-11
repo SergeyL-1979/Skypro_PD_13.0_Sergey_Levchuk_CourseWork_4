@@ -41,11 +41,17 @@ class UserDAO:
 
         return user
 
-    def delete(self, uid):
-        user = self.get_one(uid)
-        self.session.delete(user)
+    # def delete(self, uid):
+    #     user = self.get_one(uid)
+    #     self.session.delete(user)
+    #     self.session.commit()
+    #     return user
+
+    def delete(self, name):
+        nikname = self.get_username(name)
+        self.session.delete(nikname)
         self.session.commit()
-        return user
+        return nikname
 
     def compare_passwords(self, password_hash, other_password) -> bool:
         return hmac.compare_digest(

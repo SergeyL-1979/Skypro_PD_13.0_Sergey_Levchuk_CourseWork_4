@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import jwt
-# from functools import wraps
 from flask import request, abort
-
 from app.constants import JWT_SECRET, JWT_ALGORITHM
-from app.implemented import user_service
 
 
 def auth_required(func):
@@ -18,10 +15,7 @@ def auth_required(func):
 
         try:
             jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-            # current_user = user_service.get_email(user["email"])
         except Exception as e:
-            # print("JWT Decode Exception", e)
-            # abort(401)
             return {
                 "message": "Something went wrong",
                 "data": None,
@@ -50,6 +44,24 @@ def admin_required(func):
         return func(*args, **kwargs)
 
     return wrapper
+
+
+def get_user_id(head):
+    """
+    Получаем полностью заголовок, находим токен JWT и декодируем
+    :param head: заголовки
+    :return: возвращаем идентификатор пользователя
+    """
+    if "Authorization" not in head:
+        abort(401)
+    data = head["Authorization"]
+    token = data.split("Bearer ")[-1]
+
+    try:
+        data_token = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        return data_token.get("id")
+    except Exception as e:
+        return f"No{e}", 401
 
 # ================ ОБРАЗЕЦ JWT ============
 # decorator for verifying the JWT

@@ -6,13 +6,14 @@ from flask_restx import Resource, Namespace
 from app.implemented import user_service
 from app.dao.model.user import UserSchema
 
-from app.decorators import admin_required
-from app.decorators import auth_required
+from app.decorators import admin_required, auth_required, get_user_id
+
 
 user_ns = Namespace('users')
 
 user_schema = UserSchema()
-users_schema = UserSchema(many=True)
+# users_schema = UserSchema(many=True)
+users_schema = UserSchema()
 
 
 @user_ns.route('/')
@@ -26,7 +27,7 @@ class UserView(Resource):
     :parameter- `DELETE /users/<id>` —  удаляет user.
     """
 
-    @auth_required
+    @admin_required
     def get(self):
         all_users = user_service.get_all()
         return users_schema.dump(all_users), 200
@@ -35,6 +36,20 @@ class UserView(Resource):
         req_json = request.json
         user_service.create(req_json)
         return "", 201
+
+
+
+@user_ns.route('/user')
+class UserView(Resource):
+    """
+    :parameter- `/user/` — возвращает user,
+    """
+    @auth_required
+    def get(self):
+        head = request.headers
+        user_id = get_user_id(head)
+        user = user_service.get_one(user_id)
+        return users_schema.dump(user), 200
 
 
 @user_ns.route('/<int:uid>')
@@ -47,7 +62,7 @@ class UserView(Resource):
     :parameter- `PUT /users/<id>` —  обновляет user,
     :parameter- `DELETE /users/<id>` —  удаляет user.
     """
-
+    @auth_required
     def get(self, uid: int):
         try:
             user = user_service.get_one(uid)
@@ -55,12 +70,14 @@ class UserView(Resource):
         except Exception as e:
             return str(e), 404
 
+    @auth_required
     def put(self, uid):
         req_json = request.json
         req_json["id"] = uid
         user_service.update(req_json)
         return "", 204
 
+    @auth_required
     def patch(self, uid):
         req_json = request.json
         req_json["id"] = uid
@@ -75,12 +92,18 @@ class UserView(Resource):
 
 @user_ns.route('/<name>')
 class UserView(Resource):
+    @auth_required
     def get(self, name):
         try:
             user_name = user_service.get_username(name)
             return user_schema.dump(user_name), 200
         except Exception as e:
             return str(e), 404
+
+    @admin_required
+    def delete(self, name):
+        user_service.delete(name)
+        return f"DELETE {name}", 204
 
 # ======= НАДО ПРОРАБОТАТЬ НАД ПРОФИЛЕМ =======================
 # @user_ns.route('/<nickname>')

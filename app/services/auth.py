@@ -5,34 +5,29 @@ import calendar
 import jwt
 from flask import request, abort
 
-from ..constants import JWT_SECRET, JWT_ALGORITHM
-from ..services.user import UserService
+from app.constants import JWT_SECRET, JWT_ALGORITHM
+from app.services.user import UserService
 
 
 class AuthService:
     def __init__(self, user_service: UserService):
         self.user_service = user_service
 
-    # def generate_tokens(self, username, password, is_refresh=False):
     def generate_tokens(self, user_mail, password, is_refresh=False):
-        # user = self.user_service.get_username(email)
-        mails = self.user_service.get_email(user_mail)
+        user = self.user_service.get_email(user_mail)
 
-        # if user is None:
-        #     raise abort(404)
-        if mails is None:
+        if user is None:
             raise abort(404)
 
         if not is_refresh:
-            # if not self.user_service.compare_passwords(user.password, password):
-            if not self.user_service.compare_passwords(mails.password, password):
+            if not self.user_service.compare_passwords(user.password, password):
                 abort(400)
 
         data = {
-            # "name": user.name,
-            # "role": user.role,
-            "email": mails.email,
-            "role": mails.role
+            "email": user.email,
+            "role": user.role,
+            "name": user.name,
+            "id": user.id
         }
 
         # 30 minutes for access_token
@@ -52,8 +47,6 @@ class AuthService:
 
     def approve_refresh_token(self, refresh_token):
         data = jwt.decode(jwt=refresh_token, key=JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        # name = data.get("name")
-        mails = data.get("email")
+        name = data.get("email")
 
-        # return self.generate_tokens(name, None, is_refresh=True)
-        return self.generate_tokens(mails, None, is_refresh=True)
+        return self.generate_tokens(name, None, is_refresh=True)

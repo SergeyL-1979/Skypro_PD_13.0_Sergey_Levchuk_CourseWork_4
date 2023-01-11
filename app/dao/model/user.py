@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from datetime import datetime
-from flask_login import UserMixin
 from marshmallow import Schema, fields
 
 from app.setup_db import db
 
 
-class User(db.Model, UserMixin):
+class User(db.Model):
     """
     Модель пользователя имеет следующие поля:
     - ** id ** - первичный ключ
