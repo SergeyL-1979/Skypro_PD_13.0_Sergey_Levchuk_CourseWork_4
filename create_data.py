@@ -13,6 +13,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./data/movies.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+tags = db.Table('tags',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('movie_id', db.Integer, db.ForeignKey('movie.id'))
+)
+
 
 class User(db.Model):
     __tablename__ = "user"
@@ -28,6 +33,8 @@ class User(db.Model):
 
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
+
+    tags = db.relationship("Movie", secondary=tags)
 
     role = db.Column(db.String(25), nullable=False)
 
