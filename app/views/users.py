@@ -26,11 +26,17 @@ class UserView(Resource):
     :parameter- `PUT /users/<id>` —  обновляет user,
     :parameter- `DELETE /users/<id>` —  удаляет user.
     """
-
     @admin_required
     def get(self):
         all_users = user_service.get_all()
         return users_schema.dump(all_users), 200
+
+    @auth_required
+    def get(self):
+        head = request.headers
+        user_id = get_user_id(head)
+        user = user_service.get_one(user_id)
+        return users_schema.dump(user), 200
 
     def post(self):
         req_json = request.json
@@ -39,17 +45,17 @@ class UserView(Resource):
 
 
 
-@user_ns.route('/user')
-class UserView(Resource):
-    """
-    :parameter- `/user/` — возвращает user,
-    """
-    @auth_required
-    def get(self):
-        head = request.headers
-        user_id = get_user_id(head)
-        user = user_service.get_one(user_id)
-        return users_schema.dump(user), 200
+# @user_ns.route('/user')
+# class UserView(Resource):
+#     """
+#     :parameter- `/user/` — возвращает user,
+#     """
+#     @auth_required
+#     def get(self):
+#         head = request.headers
+#         user_id = get_user_id(head)
+#         user = user_service.get_one(user_id)
+#         return users_schema.dump(user), 200
 
 
 @user_ns.route('/<int:uid>')
@@ -62,13 +68,14 @@ class UserView(Resource):
     :parameter- `PUT /users/<id>` —  обновляет user,
     :parameter- `DELETE /users/<id>` —  удаляет user.
     """
-    @auth_required
-    def get(self, uid: int):
-        try:
-            user = user_service.get_one(uid)
-            return user_schema.dump(user), 200
-        except Exception as e:
-            return str(e), 404
+    # @auth_required
+    # def get(self, uid: int):
+    #     try:
+    #         user = user_service.get_one(uid)
+    #         return user_schema.dump(user), 200
+    #     except Exception as e:
+    #         return str(e), 404
+
 
     @auth_required
     def put(self, uid):
