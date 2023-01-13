@@ -1,7 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from flask import Flask, render_template
 from flask_restx import Api
+
+from app.config import Config
+from app.setup_db import db
 
 from app.views.auth import auth_ns
 from app.views.users import user_ns
@@ -9,9 +10,6 @@ from app.views.movies import movie_ns
 from app.views.directors import director_ns
 from app.views.genres import genre_ns
 
-from app.config import Config
-
-from app.setup_db import db
 
 authentication = {
     "Bearer": {
@@ -34,6 +32,7 @@ def configure_app(application: Flask):
     api = Api(
         app=app,
         title="SkyPro: auth_JWT_email",
+        # doc="/docs",
         authorizations=authentication
     )
     api.add_namespace(auth_ns)
