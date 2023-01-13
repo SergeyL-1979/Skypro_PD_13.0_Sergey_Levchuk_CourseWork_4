@@ -1,11 +1,11 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # create_data.py
 
 # чтобы создать БД с данными 
 from datetime import datetime
-from flask import Flask
+from flask import Flask, request
+from flask_restx import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
+from marshmallow import Schema, fields
 
 app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./data/test.db'
@@ -28,13 +28,12 @@ class User(db.Model):
     surname = db.Column(db.String(120))
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
-    created_on = db.Column(db.DateTime(), default=datetime.now)
-    updated_on = db.Column(db.DateTime(), default=datetime.now, onupdate=datetime.now)
+
+    created_on = db.Column(db.DateTime(), default=datetime.utcnow)
+    updated_on = db.Column(db.DateTime(), default=datetime.utcnow, onupdate=datetime.utcnow)
 
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
-
-    tags = db.relationship("Movie", secondary=tags)
 
     role = db.Column(db.String(25), nullable=False)
 

@@ -37,24 +37,6 @@ class UserView(Resource):
         user = user_service.get_one(user_id)
         return users_schema.dump(user), 200
 
-    def post(self):
-        req_json = request.json
-        user_service.create(req_json)
-        return "", 201
-
-
-# @user_ns.route('/user')
-# class UserView(Resource):
-#     """
-#     :parameter- `/user/` — возвращает user,
-#     """
-#     @auth_required
-#     def get(self):
-#         head = request.headers
-#         user_id = get_user_id(head)
-#         user = user_service.get_one(user_id)
-#         return users_schema.dump(user), 200
-
 
 @user_ns.route('/<int:uid>')
 class UserView(Resource):
@@ -66,7 +48,6 @@ class UserView(Resource):
     :parameter- `PUT /users/<id>` —  обновляет user,
     :parameter- `DELETE /users/<id>` —  удаляет user.
     """
-
     @auth_required
     def get(self, uid: int):
         try:
