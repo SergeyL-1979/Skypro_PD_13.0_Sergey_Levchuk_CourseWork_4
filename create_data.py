@@ -1,11 +1,12 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # create_data.py
 
 # чтобы создать БД с данными 
 from datetime import datetime
-from flask import Flask, request
-from flask_restx import Api, Resource
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from marshmallow import Schema, fields
+
 
 app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./data/test.db'
