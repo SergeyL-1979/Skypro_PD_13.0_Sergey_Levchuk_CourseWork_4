@@ -38,6 +38,19 @@ class UserView(Resource):
         return users_schema.dump(user), 200
 
 
+# @user_ns.route('/user')
+# class UserView(Resource):
+#     """
+#     :parameter- `/user/` — возвращает user,
+#     """
+#     @auth_required
+#     def get(self):
+#         head = request.headers
+#         user_id = get_user_id(head)
+#         user = user_service.get_one(user_id)
+#         return users_schema.dump(user), 200
+
+
 @user_ns.route('/<int:uid>')
 class UserView(Resource):
     """
