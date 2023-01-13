@@ -37,6 +37,11 @@ class UserView(Resource):
         user = user_service.get_one(user_id)
         return users_schema.dump(user), 200
 
+    def post(self):
+        req_json = request.json
+        user_service.create(req_json)
+        return "", 201
+
 
 # @user_ns.route('/user')
 # class UserView(Resource):
