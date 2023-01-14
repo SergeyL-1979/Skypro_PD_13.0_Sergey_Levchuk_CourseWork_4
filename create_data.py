@@ -35,7 +35,7 @@ class User(db.Model):
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
 
-    favorites = db.Column(db.String(25), nullable=False)
+    favorites = db.relationship("Movie", secondary=favorites)
 
     role = db.Column(db.String(25), nullable=False)
 

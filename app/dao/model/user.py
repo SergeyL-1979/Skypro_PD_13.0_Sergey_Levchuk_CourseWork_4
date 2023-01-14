@@ -31,10 +31,11 @@ class User(db.Model):
     password = db.Column(db.String(120), nullable=False)
     created_on = db.Column(db.DateTime(), default=datetime.now())
     updated_on = db.Column(db.DateTime(), default=datetime.now(), onupdate=datetime.utcnow)
+
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
 
-    favorites = db.Column(db.String(25), nullable=False)
+    favorites = db.relationship("Movie", secondary=favorites)
 
     role = db.Column(db.String(25), nullable=False)
 
