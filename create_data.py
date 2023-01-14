@@ -14,8 +14,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./data/movies.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-tags = db.Table(
-    'tags',
+favorites = db.Table(
+    'favorites',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('movie_id', db.Integer, db.ForeignKey('movie.id'))
 )
@@ -29,12 +29,13 @@ class User(db.Model):
     surname = db.Column(db.String(120))
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
-
     created_on = db.Column(db.DateTime(), default=datetime.utcnow)
     updated_on = db.Column(db.DateTime(), default=datetime.utcnow, onupdate=datetime.utcnow)
 
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
+
+    favorites = db.Column(db.String(25), nullable=False)
 
     role = db.Column(db.String(25), nullable=False)
 

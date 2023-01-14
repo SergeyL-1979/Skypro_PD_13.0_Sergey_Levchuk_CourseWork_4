@@ -5,9 +5,8 @@ from marshmallow import Schema, fields
 
 from app.setup_db import db
 
-
-tags = db.Table(
-    'tags',
+favorites = db.Table(
+    'favorites',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('movie_id', db.Integer, db.ForeignKey('movie.id'))
 )
@@ -35,7 +34,7 @@ class User(db.Model):
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
     genre = db.relationship("Genre")
 
-    role = db.Column(db.String(25), nullable=False)
+    favorites = db.Column(db.String(25), nullable=False)
 
     def __repr__(self):
         return "<{}:{}>".format(self.id, self.name)
