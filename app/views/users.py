@@ -43,19 +43,6 @@ class UserView(Resource):
         return "", 201
 
 
-# @user_ns.route('/user')
-# class UserView(Resource):
-#     """
-#     :parameter- `/user/` — возвращает user,
-#     """
-#     @auth_required
-#     def get(self):
-#         head = request.headers
-#         user_id = get_user_id(head)
-#         user = user_service.get_one(user_id)
-#         return users_schema.dump(user), 200
-
-
 @user_ns.route('/<int:uid>')
 class UserView(Resource):
     """
@@ -108,6 +95,20 @@ class UserView(Resource):
     def delete(self, name):
         user_service.delete(name)
         return f"DELETE {name}", 204
+
+
+# @user_ns.route('/user')
+# class UserView(Resource):
+#     """
+#     :parameter- `/user/` — возвращает user,
+#     """
+#     @auth_required
+#     def get(self):
+#         head = request.headers
+#         user_id = get_user_id(head)
+#         user = user_service.get_one(user_id)
+#         return users_schema.dump(user), 200
+
 
 # ======= НАДО ПРОРАБОТАТЬ НАД ПРОФИЛЕМ =======================
 # @user_ns.route('/<nickname>')

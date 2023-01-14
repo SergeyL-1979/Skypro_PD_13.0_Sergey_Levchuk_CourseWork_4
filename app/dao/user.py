@@ -32,13 +32,11 @@ class UserDAO:
         user = User(**data)
         self.session.add(user)
         self.session.commit()
-
         return user
 
     def update(self, user):
         self.session.add(user)
         self.session.commit()
-
         return user
 
     # def delete(self, uid):
