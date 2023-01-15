@@ -14,20 +14,22 @@ class AuthService:
         self.user_service = user_service
 
     def generate_tokens(self, user_mail, password, is_refresh=False):
-        user = self.user_service.get_email(user_mail)
+        user = self.user_service.get_user_by_email(user_mail)
 
         if user is None:
-            raise abort(404)
+            # raise abort(404)
+            raise Exception()
 
         if not is_refresh:
             if not self.user_service.compare_passwords(user.password, password):
-                abort(400)
+                # abort(400)
+                raise Exception()
 
         data = {
             "email": user.email,
-            "role": user.role,
-            "name": user.name,
-            "id": user.id
+            # "role": user.role,
+            # "name": user.name,
+            # "id": user.id
         }
 
         # 30 minutes for access_token
@@ -47,6 +49,20 @@ class AuthService:
 
     def approve_refresh_token(self, refresh_token):
         data = jwt.decode(jwt=refresh_token, key=JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        name = data.get("email")
+        mail_user = data.get("email")
+        user = self.user_service.get_user_by_email(mail_user)
 
-        return self.generate_tokens(name, None, is_refresh=True)
+        if user is None:
+            raise Exception()
+        print(user, "service auth")
+        return self.generate_tokens(mail_user, user.password, is_refresh=True)
+
+    def validate_tokens(self, access_token, refresh_token):
+        for token in [access_token, refresh_token]:
+            try:
+                jwt.decode(jwt=token, key=JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            except Exception as e:
+                print(e, 'validate not')
+                return False
+
+        return True

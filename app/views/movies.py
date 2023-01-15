@@ -28,7 +28,15 @@ class MoviesView(Resource):
     выводит список фильмов по ID режиссера и жанра
     """
     def get(self):
-        all_movies = movie_service.get_all()
+        status = request.args.get("status")
+        page = request.args.get("page")
+
+        filters = {
+            "status": status,
+            "page": page
+        }
+
+        all_movies = movie_service.get_all(filters)
         return movies_schema.dump(all_movies), 200
 
     def post(self):

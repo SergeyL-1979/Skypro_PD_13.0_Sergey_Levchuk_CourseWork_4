@@ -22,8 +22,8 @@ class UserService:
     def get_username(self, user_name):
         return self.dao.get_username(user_name)
 
-    def get_email(self, user_email):
-        return self.dao.get_email(user_email)
+    def get_user_by_email(self, user_email):
+        return self.dao.get_user_by_email(user_email)
 
     def get_all(self):
         return self.dao.get_all()
@@ -32,28 +32,11 @@ class UserService:
         data_user["password"] = self.get_hash(data_user["password"])
         return self.dao.create(data_user)
 
-    def update(self, data):
-        uid = data.get("id")
-        user = self.get_one(uid)
+    def update(self, user_d):
+        self.dao.update(user_d)
+        return self.dao
 
-        if "name" in data:
-            user.name = data.get("name")
-        if "surname" in data:
-            user.surname = data.get("surname")
-        if "email" in data:
-            user.email = data.get("email")
-        if "password" in data:
-            user.password = self.get_hash(data.get("password"))
-        if "role" in data:
-            user.role = data.get("role")
-        if "favorite_genre_id" in data:
-            user.favorite_genre_id = data.get("favorite_genre_id")
-
-        self.dao.update(user)
-
-    # def delete(self, uid):
-    #     self.dao.delete(uid)
-
+    # ==== Удаление по имени ====
     def delete(self, name):
         self.dao.delete(name)
 
@@ -64,3 +47,24 @@ class UserService:
             PWD_HASH_SALT,
             PWD_HASH_ITERATIONS
         ))
+
+    def compare_passwords(self, password_hash, other_password) -> bool:
+        return self.dao.compare_passwords(password_hash, other_password)
+
+    # ==== ВАРИАНТ ОБНОВЛЕНИЯ ДАННЫХ ====
+    # def update(self, u_data):
+    #     uid = u_data.get("id")
+    #     user = self.get_one(uid)
+    #     if "name" in u_data:
+    #         user.name = u_data.get("name")
+    #     if "surname" in u_data:
+    #         user.surname = u_data.get("surname")
+    #     if "email" in u_data:
+    #         user.email = u_data.get("email")
+    #     if "role" in u_data:
+    #         user.role = u_data.get("role")
+    #     self.dao.update(user)
+
+    # ==== Удаление по ID ====
+    # def delete(self, uid):
+    #     self.dao.delete(uid)

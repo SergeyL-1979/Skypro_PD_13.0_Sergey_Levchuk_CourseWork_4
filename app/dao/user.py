@@ -22,8 +22,8 @@ class UserDAO:
     def get_username(self, user_name):
         return self.session.query(User).filter(User.name == user_name).first()
 
-    def get_email(self, user_email):
-        return self.session.query(User).filter(User.email == user_email).first()
+    def get_user_by_email(self, user_email):
+        return self.session.query(User).filter(User.email == user_email).one_or_none()
 
     def get_all(self):
         return self.session.query(User).all()
@@ -34,22 +34,22 @@ class UserDAO:
         self.session.commit()
         return user
 
-    def update(self, user):
+    # === ВАРИАНТ ИЗ ВИДЕОРАЗБОРА КУРСОВОЙ ====
+    def update(self, user_d):
+        user = self.get_one(user_d.get("id"))
+
+        for k, v in user_d.items():
+            setattr(user, k, v)
+
         self.session.add(user)
         self.session.commit()
-        return user
 
-    # def delete(self, uid):
-    #     user = self.get_one(uid)
-    #     self.session.delete(user)
-    #     self.session.commit()
-    #     return user
-
-    def delete(self, name):
-        nikname = self.get_username(name)
-        self.session.delete(nikname)
+    # ==== УДАЛЕНИЕ ПО ИМЕНИ ====
+    def delete(self, name_d):
+        name = self.get_username(name_d)
+        self.session.delete(name)
         self.session.commit()
-        return nikname
+        return name
 
     def compare_passwords(self, password_hash, other_password) -> bool:
         return hmac.compare_digest(
@@ -61,3 +61,26 @@ class UserDAO:
                 PWD_HASH_ITERATIONS
             )
         )
+
+    # === MY VARIANT =====
+    # def update(self, user_d):
+    #     self.session.add(user_d)
+    #     self.session.commit()
+    #     return user_d
+
+    # ==== VARIANT UPDATE ====
+    # def update(self, user_d):
+    #     user = self.get_one(user_d.get("id"))
+    #     user.name = user_d.get("name")
+    #     user.password = user_d.get("password")
+    #     self.session.add(user)
+    #     self.session.commit()
+
+    # ==== УДАЛИТЬ ПО ID ====
+    # def delete(self, uid):
+    #     user = self.get_one(uid)
+    #     self.session.delete(user)
+    #     self.session.commit()
+    #     return user
+
+

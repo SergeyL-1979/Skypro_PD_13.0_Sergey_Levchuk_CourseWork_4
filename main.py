@@ -34,7 +34,7 @@ def configure_app(application: Flask):
     api = Api(
         app=app,
         title="SkyPro: auth_JWT_email",
-        # doc="/docs",
+        doc="/docs",
         authorizations=authentication
     )
     api.add_namespace(auth_ns)
@@ -47,8 +47,8 @@ def configure_app(application: Flask):
 if __name__ == '__main__':
     app_config = Config()
     app = create_app(app_config)
-    # @app.route('/')
-    # def index():
-    #     return render_template("index.html")
+    @app.route('/')
+    def index():
+        return render_template("index.html")
     configure_app(app)
     app.run()

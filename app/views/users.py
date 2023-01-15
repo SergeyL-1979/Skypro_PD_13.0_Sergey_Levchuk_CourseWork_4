@@ -34,7 +34,8 @@ class UserView(Resource):
     def get(self):
         head = request.headers
         user_id = get_user_id(head)
-        user = user_service.get_one(user_id)
+        # user = user_service.get_one(user_id)
+        user = user_service.get_user_by_email(user_id)
         return users_schema.dump(user), 200
 
     def post(self):
@@ -61,18 +62,18 @@ class UserView(Resource):
         except Exception as e:
             return str(e), 404
 
-    @auth_required
-    def put(self, uid):
-        req_json = request.json
-        req_json["id"] = uid
-        user_service.update(req_json)
-        return "", 204
+    # @auth_required
+    # def put(self, uid):
+    #     req_json = request.json
+    #     req_json["id"] = uid
+    #     user_service.update(req_json)
+    #     return "", 204
 
     @auth_required
     def patch(self, uid):
         req_json = request.json
         req_json["id"] = uid
-        user_service.update_partial(req_json)
+        user_service.update(req_json)
         return "", 204
 
     @admin_required
@@ -95,6 +96,28 @@ class UserView(Resource):
     def delete(self, name):
         user_service.delete(name)
         return f"DELETE {name}", 204
+
+
+@user_ns.route('/password')
+class UpdatePasswordView(Resource):
+    def put(self):
+        data = request.json
+
+        email = data.get("email")
+        print(email, 'user_ns')
+        old_password = data.get("old_password")
+        new_password = data.get("new_password")
+
+        user = user_service.get_user_by_email(email)
+        print(user, "name")
+        if user_service.compare_passwords(user.password, old_password):
+            user.password = user_service.get_hash(new_password)
+            result = users_schema.dump(user)
+            user_service.update(result)
+            print("Password NEW")
+        else:
+            print("Password not new")
+        return "", 201
 
 
 # @user_ns.route('/user')

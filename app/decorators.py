@@ -14,15 +14,16 @@ def auth_required(func):
         token = data.split("Bearer ")[-1]
 
         try:
-            jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            d = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            print(d, "dec-jwt")
         except Exception as e:
             return {
                 "message": "Something went wrong",
                 "data": None,
                 "error": str(e)
             }, 500
-
         return func(*args, **kwargs)
+
     return wrapper
 
 

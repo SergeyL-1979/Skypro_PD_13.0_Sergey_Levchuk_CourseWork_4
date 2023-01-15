@@ -23,7 +23,12 @@ class DirectorView(Resource):
     :parameter- `DELETE /directors/<id>` —  удаляет режиссера.
     """
     def get(self):
-        all_directors = director_service.get_all()
+        page = request.args.get("page")
+
+        filters = {
+            "page": page
+        }
+        all_directors = director_service.get_all(filters)
         return directors_schema.dump(all_directors), 200
 
     def post(self):

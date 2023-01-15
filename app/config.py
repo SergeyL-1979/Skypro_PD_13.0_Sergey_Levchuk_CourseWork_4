@@ -21,6 +21,7 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///./data/movies.db'
     POSTS_PER_PAGE = 12  # пагинация, вывод данных на страницу
+    MAX_PAGE = 100  # максимальное количество страниц
 
     # ===== ВАРИАНТЫ ИМПОРТА SECRET_KEY ИЗ ПЕРЕМЕНЫХ СРЕД =====
     # **** МОЖНО ИСПОЛЬЗОВАТЬ ВАРИАНТА ****
