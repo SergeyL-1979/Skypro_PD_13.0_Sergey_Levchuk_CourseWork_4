@@ -37,6 +37,23 @@ class MovieDAO:
 
         return self.session.query(Movie).all()
 
+    def create(self, movie_data):
+        movie_d = Movie(**movie_data)
+        self.session.add(movie_d)
+        self.session.commit()
+        return movie_d
+
+    def update(self, movie):
+        self.session.add(movie)
+        self.session.commit()
+        return movie
+
+    def delete(self, mid):
+        movie = self.get_one(mid)
+        self.session.delete(movie)
+        self.session.commit()
+        return movie
+
     # def get_all(self):
     #     director = request.args.get("director_id")
     #     genre = request.args.get("genre_id")
@@ -63,21 +80,3 @@ class MovieDAO:
     #     else:
     #         movies = Movie.query.filter(Movie.director_id == director)
     #     return movies
-
-    def create(self, movie_data):
-        movie_d = Movie(**movie_data)
-        self.session.add(movie_d)
-        self.session.commit()
-        return movie_d
-
-    def update(self, movie):
-        self.session.add(movie)
-        self.session.commit()
-        return movie
-
-    def delete(self, mid):
-        movie = self.get_one(mid)
-        self.session.delete(movie)
-        self.session.commit()
-
-        return movie
