@@ -6,7 +6,7 @@ from flask_restx import Resource, Namespace
 from app.implemented import user_service
 from app.dao.model.user import UserSchema
 
-from app.decorators import admin_required, auth_required  # get_user_id
+from app.decorators import admin_required, auth_required, get_user_id
 
 user_ns = Namespace('users')
 
