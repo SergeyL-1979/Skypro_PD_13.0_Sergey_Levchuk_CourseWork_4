@@ -16,8 +16,8 @@ class TestDirectorService:
         assert director is not None
         assert director.id is not None
 
-    def test_get_all(self):
-        directors = self.director_service.get_all()
+    def test_get_all(self, filters):
+        directors = self.director_service.get_all(filters)
         assert len(directors) > 0
 
     def test_create(self):

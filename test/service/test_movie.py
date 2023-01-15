@@ -16,8 +16,8 @@ class TestMovieService:
         assert movie is not None
         assert movie.id is not None
 
-    def test_get_all(self):
-        movies = self.movie_service.get_all()
+    def test_get_all(self, filters):
+        movies = self.movie_service.get_all(filters)
 
         assert len(movies) > 0
 
