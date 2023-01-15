@@ -14,10 +14,16 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./data/movies.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-favorites = db.Table(
-    'favorites',
+favorite_movie = db.Table(
+    'favorite_movie',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('movie_id', db.Integer, db.ForeignKey('movie.id'))
+)
+
+favorite_genre = db.Table(
+    'favorite_genre',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('genre_id', db.Integer, db.ForeignKey('genre.id'))
 )
 
 
@@ -31,13 +37,11 @@ class User(db.Model):
     password = db.Column(db.String(120), nullable=False)
     created_on = db.Column(db.DateTime(), default=datetime.utcnow)
     updated_on = db.Column(db.DateTime(), default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    favorite_genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
-    genre = db.relationship("Genre")
-
-    favorites = db.relationship("Movie", secondary=favorites)
-
     role = db.Column(db.String(25), nullable=False)
+
+    # favorite_genre_id = db.Column(db.ForeignKey("genre.id"), db.Integer)
+    favorite_genre = db.relationship("Genre", secondary=favorite_genre)
+    favorite_movie = db.relationship("Movie", secondary=favorite_movie)
 
 
 class Movie(db.Model):
