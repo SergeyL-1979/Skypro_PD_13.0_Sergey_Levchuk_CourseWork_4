@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+from datetime import datetime
 # Метод хеширование пароля
 import hashlib
 import base64
@@ -37,6 +37,9 @@ class UserDAO:
     # === ВАРИАНТ ИЗ ВИДЕОРАЗБОРА КУРСОВОЙ ====
     def update(self, user_d):
         user = self.get_one(user_d.get("id"))
+
+        user_d['created_on'] = datetime.fromisoformat(user_d['created_on'])
+        user_d['updated_on'] = datetime.now()
 
         for k, v in user_d.items():
             setattr(user, k, v)
