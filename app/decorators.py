@@ -18,8 +18,7 @@ def auth_required(func):
         token = data.split("Bearer ")[-1]
 
         try:
-            d = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-            print(d, "dec-jwt")
+            jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         except Exception as e:
             return {
                 "message": "Something went wrong",
@@ -64,7 +63,6 @@ def get_user_email(head):
 
     try:
         data_token = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        print(data_token, "get_user_email")
         return data_token.get("email")
     except Exception as e:
         return f"No{e}", 401

@@ -36,7 +36,6 @@ class UserView(Resource):
         head = request.headers
         user_email = get_user_email(head)
         user = user_service.get_user_by_email(user_email)
-        print(user)
         return users_schema.dump(user), 200
 
     def post(self):
