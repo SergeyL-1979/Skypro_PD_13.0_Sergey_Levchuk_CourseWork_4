@@ -22,8 +22,8 @@ class UserDAO:
     def get_username(self, user_name):
         return self.session.query(User).filter(User.name == user_name).first()
 
-    def get_user_by_email(self, user_email):
-        return self.session.query(User).filter(User.email == user_email).one_or_none()
+    def get_user_by_email(self, email):
+        return self.session.query(User).filter(User.email == email).one_or_none()
 
     def get_all(self):
         return self.session.query(User).all()
