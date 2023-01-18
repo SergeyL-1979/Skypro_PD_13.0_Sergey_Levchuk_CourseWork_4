@@ -22,8 +22,8 @@ class UserService:
     def get_username(self, user_name):
         return self.dao.get_username(user_name)
 
-    def get_user_by_email(self, user_email):
-        return self.dao.get_user_by_email(user_email)
+    def get_user_by_email(self, email):
+        return self.dao.get_user_by_email(email)
 
     def get_all(self):
         return self.dao.get_all()
