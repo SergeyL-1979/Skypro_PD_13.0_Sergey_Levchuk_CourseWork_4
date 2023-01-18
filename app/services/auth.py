@@ -27,9 +27,9 @@ class AuthService:
 
         data = {
             "email": user.email,
-            # "role": user.role,
-            # "name": user.name,
-            # "id": user.id
+            "role": user.role,
+            "name": user.name,
+            "id": user.id
         }
 
         # 30 minutes for access_token
