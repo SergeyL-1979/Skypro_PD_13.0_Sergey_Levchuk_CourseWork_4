@@ -7,7 +7,7 @@ from app.implemented import user_service
 from app.dao.model.user import UserSchema
 
 from app.decorators import admin_required, auth_required
-from app.decorators import get_user_id
+from app.decorators import get_user_email
 
 user_ns = Namespace('users')
 
@@ -34,8 +34,8 @@ class UserView(Resource):
     @auth_required
     def get(self):
         head = request.headers
-        user_id = get_user_id(head)
-        user = user_service.get_user_by_email(user_id)
+        user_email = get_user_email(head)
+        user = user_service.get_user_by_email(user_email)
         print(user)
         return users_schema.dump(user), 200
 

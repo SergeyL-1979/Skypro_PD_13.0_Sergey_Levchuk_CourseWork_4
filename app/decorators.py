@@ -26,7 +26,6 @@ def auth_required(func):
                 "data": None,
                 "error": str(e)
             }, 500
-        # print(current_user)
         return func(*args, **kwargs)
 
     return wrapper
@@ -52,7 +51,7 @@ def admin_required(func):
     return wrapper
 
 
-def get_user_id(head):
+def get_user_email(head):
     """
     Получаем полностью заголовок, находим токен JWT и декодируем
     :param head: заголовки
@@ -65,6 +64,7 @@ def get_user_id(head):
 
     try:
         data_token = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        print(data_token, "get_user_email")
         return data_token.get("email")
     except Exception as e:
         return f"No{e}", 401
