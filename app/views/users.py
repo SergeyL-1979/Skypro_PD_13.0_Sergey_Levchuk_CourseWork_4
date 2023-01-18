@@ -6,7 +6,8 @@ from flask_restx import Resource, Namespace
 from app.implemented import user_service
 from app.dao.model.user import UserSchema
 
-from app.decorators import admin_required, auth_required, get_user_id
+from app.decorators import admin_required, auth_required
+from app.decorators import get_user_id
 
 user_ns = Namespace('users')
 
@@ -25,17 +26,17 @@ class UserView(Resource):
     :parameter- `PUT /users/<id>` —  обновляет user,
     :parameter- `DELETE /users/<id>` —  удаляет user.
     """
-    @admin_required
-    def get(self):
-        all_users = user_service.get_all()
-        return users_schema.dump(all_users), 200
+    # @admin_required
+    # def get(self):
+    #     all_users = user_service.get_all()
+    #     return users_schema.dump(all_users), 200
 
     @auth_required
     def get(self):
         head = request.headers
         user_id = get_user_id(head)
-        # user = user_service.get_one(user_id)
         user = user_service.get_user_by_email(user_id)
+        print(user)
         return users_schema.dump(user), 200
 
     def post(self):
@@ -54,7 +55,7 @@ class UserView(Resource):
     :parameter- `PUT /users/<id>` —  обновляет user,
     :parameter- `DELETE /users/<id>` —  удаляет user.
     """
-    @auth_required
+    @admin_required
     def get(self, uid: int):
         try:
             user = user_service.get_one(uid)
