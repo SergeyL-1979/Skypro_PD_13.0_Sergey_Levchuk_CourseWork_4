@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from functools import wraps
+
 import jwt
 from flask import request, abort
 from app.constants import JWT_SECRET, JWT_ALGORITHM
+from app.implemented import user_service
 
 
 def auth_required(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
         if "Authorization" not in request.headers:
             abort(401)
@@ -22,6 +26,7 @@ def auth_required(func):
                 "data": None,
                 "error": str(e)
             }, 500
+        # print(current_user)
         return func(*args, **kwargs)
 
     return wrapper
@@ -60,7 +65,7 @@ def get_user_id(head):
 
     try:
         data_token = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        return data_token.get("id")
+        return data_token.get("email")
     except Exception as e:
         return f"No{e}", 401
 
