@@ -50,6 +50,6 @@ class UserSchema(Schema):
     # updated_on = fields.DateTime("%d-%m-%Y %H:%M")
 
     # === Для корректной работы с изменением пароля работает именно без форматирования даты ===
-    created_on = fields.DateTime()
-    updated_on = fields.DateTime()
+    created_on = fields.DateTime("%Y-%m-%d %H:%M")
+    updated_on = fields.DateTime("%Y-%m-%d %H:%M")
     role = fields.Str()
