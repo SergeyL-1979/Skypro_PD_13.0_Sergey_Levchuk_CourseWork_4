@@ -7,7 +7,6 @@ from app.implemented import user_service
 from app.dao.model.user import UserSchema
 
 from app.decorators import admin_required, auth_required
-from app.decorators import get_user_email
 
 user_ns = Namespace('users')
 
@@ -34,7 +33,7 @@ class UserView(Resource):
     @auth_required
     def get(self):
         head = request.headers
-        user_email = get_user_email(head)
+        user_email = user_service.get_user_email(head)
         user = user_service.get_user_by_email(user_email)
         return users_schema.dump(user), 200
 
@@ -100,16 +99,16 @@ class UserView(Resource):
 
 @user_ns.route('/password')
 class UpdatePasswordView(Resource):
+    @auth_required
     def put(self):
         data = request.json
+        head = request.headers
 
-        email = data.get("email")
-        print(email, 'user_ns')
+        email = user_service.get_user_email(head)
         old_password = data.get("old_password")
         new_password = data.get("new_password")
 
         user = user_service.get_user_by_email(email)
-        print(user, "name")
         if user_service.compare_passwords(user.password, old_password):
             user.password = user_service.get_hash(new_password)
             result = users_schema.dump(user)
