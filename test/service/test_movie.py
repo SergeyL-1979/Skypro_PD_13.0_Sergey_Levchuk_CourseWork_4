@@ -18,7 +18,6 @@ class TestMovieService:
 
     def test_get_all(self, filters):
         movies = self.movie_service.get_all(filters)
-
         assert len(movies) > 0
 
     def test_create(self):
