@@ -4,9 +4,9 @@
 # Метод хеширование пароля
 import hashlib
 import base64
-import hmac
+import jwt
 
-from app.constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS
+from app.constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS, JWT_SECRET, JWT_ALGORITHM
 
 from app.dao.user import UserDAO
 
@@ -28,7 +28,35 @@ class UserService:
     def get_all(self):
         return self.dao.get_all()
 
+    def add_favorite_movie(self, email, movie_id):
+        """ Получаем по почте айди юзера из токена, после полученное
+        айди юзера и айди фильма из переменной передаем в запрос в БД """
+        user = self.get_user_by_email(email)
+        data_mov = {
+            "user_id": user.id,
+            "movie_id": movie_id
+        }
+        self.dao.add_favorite_movie(data_mov)
+
+    def del_favorite_movie(self, email, movie_id):
+        user = self.get_user_by_email(email)
+        self.dao.del_favorite_movie(user.id, movie_id)
+
+    def add_favorite_genre(self, email, genre_id):
+        """ Создаем словарь, который передаем в запрос к БД через ДАО """
+        user = self.get_user_by_email(email)
+        data_genre = {
+            "user_id": user.id,
+            "genre_id": genre_id
+        }
+        self.dao.add_favorite_genre(data_genre)
+
+    def del_favorite_genre(self, email, genre_id):
+        user = self.get_user_by_email(email)
+        self.dao.del_favorite_genre(user.id, genre_id)
+
     def create(self, data_user):
+        """ Создаем хэшированный пароль """
         data_user["password"] = self.get_hash(data_user["password"])
         return self.dao.create(data_user)
 
@@ -49,7 +77,23 @@ class UserService:
         ))
 
     def compare_passwords(self, password_hash, other_password) -> bool:
+        """ Сравниваем пароли """
         return self.dao.compare_passwords(password_hash, other_password)
+
+    def get_user_email(self, head):
+        """
+        Получаем полностью заголовок, находим токен JWT и декодируем
+        :param head: заголовки
+        :return: возвращаем идентификатор пользователя
+        """
+        data = head["Authorization"]
+        token = data.split("Bearer ")[-1]
+
+        try:
+            data_token = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            return data_token.get("email")
+        except Exception as e:
+            return f"No{e}", 401
 
     # ==== ВАРИАНТ ОБНОВЛЕНИЯ ДАННЫХ ====
     # def update(self, u_data):
