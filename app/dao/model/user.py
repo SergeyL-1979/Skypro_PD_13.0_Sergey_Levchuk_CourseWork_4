@@ -32,8 +32,8 @@ class User(db.Model):
     role = db.Column(db.String(25), nullable=False)
 
     # Для получения доступа к связанным объектам
-    favorite_genre = db.relationship("Genre", secondary=favorite_genre)
-    favorite_movie = db.relationship("Movie", secondary=favorite_movie)
+    favorite_genre = db.relationship("Genre", secondary=favorite_genre, backref="fav_genre")
+    favorite_movie = db.relationship("Movie", secondary=favorite_movie, backref="fav_movie")
 
     def __repr__(self):
         return "<{}:{}>".format(self.id, self.name)
