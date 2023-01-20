@@ -50,6 +50,15 @@ class FavoriteGenre(db.Model):
 
 
 class User(db.Model):
+    """
+    Модель пользователя имеет следующие поля:
+    - ** id ** - первичный ключ
+    - ** email ** по нему будет осуществлен доступ на сайт (*уникальное*)
+    - ** password ** — не забывайте, что пароль тут будет в хэшированном виде
+    - name - имя
+    - surname - фамилия
+    - favorite_genre - любимый жанр
+    """
     __tablename__ = "user"
 
     id = db.Column(db.Integer, primary_key=True)
